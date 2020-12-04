@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import EmployeeService from '../services/EmployeeService';
+import axios from "axios";
 
 class UpdateEmployeeComponent extends Component {
     constructor(props) {
@@ -17,7 +18,7 @@ class UpdateEmployeeComponent extends Component {
     }
 
     componentDidMount(){
-        EmployeeService.getEmployeeById(this.state.id).then( (res) =>{
+        axios.get("http://localhost:9090/api/v1/employees/"+this.state.id).then( (res) =>{
             let employee = res.data;
             this.setState({firstName: employee.firstName,
                 lastName: employee.lastName,

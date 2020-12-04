@@ -1,3 +1,5 @@
+import Axios from 'axios';
+import axios from "axios";
 import React, { Component } from 'react'
 import EmployeeService from '../services/EmployeeService'
 
@@ -14,7 +16,7 @@ class ListEmployeeComponent extends Component {
     }
 
     deleteEmployee(id){
-        EmployeeService.deleteEmployee(id).then( res => {
+        axios.delete("http://localhost:9090/api/v1/employees/"+id).then( res => {
             this.setState({employees: this.state.employees.filter(employee => employee.id !== id)});
         });
     }
@@ -26,9 +28,8 @@ class ListEmployeeComponent extends Component {
     }
 
     componentDidMount(){
-        EmployeeService.getEmployees().then((res) => {
-            this.setState({ employees: res.data});
-        });
+        Axios.get("http://localhost:9090/api/v1/employees").then(res=>this.setState({ employees: res.data})).catch(err=>console.log(err));
+        
     }
 
     addEmployee(){

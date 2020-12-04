@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import EmployeeService from '../services/EmployeeService';
+import axios from "axios";
+
 
 class CreateEmployeeComponent extends Component {
     constructor(props) {
@@ -24,7 +26,7 @@ class CreateEmployeeComponent extends Component {
         if(this.state.id === '_add'){
             return
         }else{
-            EmployeeService.getEmployeeById(this.state.id).then( (res) =>{
+            axios.get("http://localhost:9090/api/v1/employees/"+this.state.id).then( (res) =>{
                 let employee = res.data;
                 this.setState({firstName: employee.firstName,
                     lastName: employee.lastName,
@@ -40,11 +42,11 @@ class CreateEmployeeComponent extends Component {
 
         // step 5
         if(this.state.id === '_add'){
-            EmployeeService.createEmployee(employee).then(res =>{
+            axios.post(`http://localhost:9090/api/v1/employees`,employee).then(res =>{
                 this.props.history.push('/employees');
             });
         }else{
-            EmployeeService.updateEmployee(employee, this.state.id).then( res => {
+            axios.put("http://localhost:9090/api/v1/employees/"+ this.state.id,employee).then( res => {
                 this.props.history.push('/employees');
             });
         }
@@ -101,8 +103,8 @@ class CreateEmployeeComponent extends Component {
                                                 value={this.state.emailId} onChange={this.changeEmailHandler}/>
                                         </div>
 
-                                        <button className="btn btn-success" onClick={this.saveOrUpdateEmployee}>Save</button>
-                                        <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{marginLeft: "10px"}}>Cancel</button>
+                                        <button className="btn btn-info" onClick={this.saveOrUpdateEmployee}>Save</button>
+                                        <button className="btn btn-warning" onClick={this.cancel.bind(this)} style={{marginLeft: "8px"}}>Cancel</button>
                                     </form>
                                 </div>
                             </div>
